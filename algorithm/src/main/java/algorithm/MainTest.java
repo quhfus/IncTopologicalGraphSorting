@@ -10,8 +10,8 @@ public class MainTest {
 	public static void main(String[] args) {
 		long time = System.currentTimeMillis();
 		DAGSmith smith = new DAGSmith();
-		boolean[][] dag = smith.generateRandomDAG(10, 2);
-		System.out.println(DAGTools.printDAG(dag));
+		boolean[][] dag = smith.generateRandomDAG(10000, 60);
+//		System.out.println(DAGTools.printDAG(dag));
 		System.out.println(
 				"Generated a " + dag.length + "x" + dag[0].length + " DAG with " + DAGTools.getEdges(dag) + " edges.");
 
@@ -34,7 +34,7 @@ public class MainTest {
 		System.out.println("Generation Time: " + (System.currentTimeMillis() - time));
 		TopSort ts = new TopSort(graph);
 		ts.topologicalSort();
-		ts.print();
+//		ts.print();
 //		System.out.println("-------------------------------");
 //		ts.addBackwardEdge(vertexes[0], vertexes[3]);
 //		ts.print();

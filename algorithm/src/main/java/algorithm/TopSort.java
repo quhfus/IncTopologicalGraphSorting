@@ -119,7 +119,7 @@ public class TopSort {
 			unvisited.remove(x);
 		}
 	}
-	
+
 	private void iterateOutgoingEdgeNonRecursivDFS(Deque<Vertex> deque) {
 		while (!deque.isEmpty()) {
 			Vertex x = deque.peek();
@@ -130,7 +130,7 @@ public class TopSort {
 				Vertex target = e.getTarget();
 				if (!visited.contains(target)) {
 					deque.push(target);
-//					deque_set.add(target);
+					// deque_set.add(target);
 					push = true;
 					break;
 				}
@@ -158,57 +158,54 @@ public class TopSort {
 		}
 	}
 
-	void addBackwardEdge(Vertex a, Vertex b) {
+	void insertEdge(Vertex a, Vertex b) {
+		encounter.clear();
+		a.addOutGoingEdge(new Edge(b));
 		long time = System.currentTimeMillis();
 		encounter.add(a);
-//		actionNewEdge(a, b, encounter);
+		// actionNewEdge(a, b, encounter);
 		actionNewEdgeNonRecursive(a, b);
 		System.out.println("Edge Add Time: " + (System.currentTimeMillis() - time));
 	}
 
-//	private void actionNewEdge(Vertex a, Vertex b, Set<Vertex> encounter) {
-//		// System.out.println("Vertex: " + a.getText() + " Vertex: " +
-//		// b.getText());
-//		if (encounter.contains(b)) {
-//			System.out.println("Cycle detected!!!");
-//		}
-//		encounter.add(b);
-//
-//		if (!isBefore(a, b)) {
-//			setBehind(a, b);
-//			Set<Edge> edges = b.getOutgoingEdges();
-//			for (Edge e : edges) {
-//				Vertex target = e.getTarget();
-//				actionNewEdge(b, target, encounter);
-//			}
-//		}
-//		encounter.remove(b);
-//	}
+	// private void actionNewEdge(Vertex a, Vertex b, Set<Vertex> encounter) {
+	// // System.out.println("Vertex: " + a.getText() + " Vertex: " +
+	// // b.getText());
+	// if (encounter.contains(b)) {
+	// System.out.println("Cycle detected!!!");
+	// }
+	// encounter.add(b);
+	//
+	// if (!isBefore(a, b)) {
+	// setBehind(a, b);
+	// Set<Edge> edges = b.getOutgoingEdges();
+	// for (Edge e : edges) {
+	// Vertex target = e.getTarget();
+	// actionNewEdge(b, target, encounter);
+	// }
+	// }
+	// encounter.remove(b);
+	// }
 
 	private void actionNewEdgeNonRecursive(Vertex a, Vertex b) {
-		encounter.add(a);
 		Deque<VertexPair> deque = new ArrayDeque<VertexPair>();
-		deque.add(new VertexPair(a, b));
+		deque.push(new VertexPair(a, b));
 		while (!deque.isEmpty()) {
 			VertexPair p = deque.peek();
 			Vertex a1 = p.getLeft();
 			Vertex b1 = p.getRight();
-			if (encounter.contains(b1)) {
-				System.out.println("Cycle detected!!!");
-			}
-			encounter.add(b1);
-			
+
 			if (!isBefore(a1, b1)) {
 				setBehind(a1, b1);
-				Set<Edge> edges = b.getOutgoingEdges();
+				Set<Edge> edges = b1.getOutgoingEdges();
 				for (Edge e : edges) {
 					Vertex target = e.getTarget();
-					deque.add(new VertexPair(b, target));
+//					deque.pop();
+					deque.push(new VertexPair(b1, target));
 				}
 			} else {
 				deque.pop();
 			}
-			encounter.remove(b1);
 		}
 	}
 
@@ -274,43 +271,44 @@ public class TopSort {
 
 	public static void main(String args[]) {
 		// Todo Graph Generation
-		DirectedGraph<Vertex, Edge> graph = new DirectedSparseGraph<Vertex, Edge>();
-		Vertex a = new Vertex(0);
-		a.setText("a");
-		Vertex b = new Vertex(1);
-		b.setText("b");
-		Vertex c = new Vertex(2);
-		c.setText("c");
-		Vertex d = new Vertex(3);
-		d.setText("d");
-		Vertex e = new Vertex(4);
-		e.setText("e");
-		Vertex f = new Vertex(5);
-		f.setText("f");
+		// DirectedGraph<Vertex, Edge> graph = new DirectedSparseGraph<Vertex,
+		// Edge>();
+		// Vertex a = new Vertex(0);
+		// a.setText("a");
+		// Vertex b = new Vertex(1);
+		// b.setText("b");
+		// Vertex c = new Vertex(2);
+		// c.setText("c");
+		// Vertex d = new Vertex(3);
+		// d.setText("d");
+		// Vertex e = new Vertex(4);
+		// e.setText("e");
+		// Vertex f = new Vertex(5);
+		// f.setText("f");
+		//
+		// a.addOutGoingEdge(new Edge(b));
+		// a.addOutGoingEdge(new Edge(f));
+		// b.addOutGoingEdge(new Edge(c));
+		// b.addOutGoingEdge(new Edge(d));
+		//// d.addOutGoingEdge(new Edge(c));
+		// e.addOutGoingEdge(new Edge(d));
+		// f.addOutGoingEdge(new Edge(d));
+		//
+		// graph.addVertex(a);
+		// graph.addVertex(b);
+		// graph.addVertex(c);
+		// graph.addVertex(d);
+		// graph.addVertex(e);
+		// graph.addVertex(f);
+		//
+		// TopSort ex = new TopSort(graph);
+		// ex.topologicalSort();
+		// ex.print();
+		//
+		// ex.addBackwardEdge(d, c);
+		// ex.print();
+		// ex.printStackMap();
 
-		a.addOutGoingEdge(new Edge(b));
-		a.addOutGoingEdge(new Edge(f));
-		b.addOutGoingEdge(new Edge(c));
-		b.addOutGoingEdge(new Edge(d));
-		d.addOutGoingEdge(new Edge(c));
-		e.addOutGoingEdge(new Edge(d));
-		f.addOutGoingEdge(new Edge(d));
-
-		graph.addVertex(a);
-		graph.addVertex(b);
-		graph.addVertex(c);
-		graph.addVertex(d);
-		graph.addVertex(e);
-		graph.addVertex(f);
-
-		TopSort ex = new TopSort(graph);
-		ex.topologicalSort();
-		ex.print();
-		
-		ex.addBackwardEdge(d, b);
-		ex.print();
-		ex.printStackMap();
-		
 		// DirectedGraph<Vertex, Edge> graph = new DirectedSparseGraph<Vertex,
 		// Edge>();
 		// Vertex a = new Vertex(1);
@@ -344,61 +342,77 @@ public class TopSort {
 		// graph.addVertex(e);
 		// graph.addVertex(f);
 
-//		DirectedGraph<Vertex, Edge> graph = new DirectedSparseGraph<Vertex, Edge>();
-//		Vertex a = new Vertex(1);
-//		a.setText("a");
-//		Vertex b = new Vertex(2);
-//		b.setText("b");
-//		Vertex c = new Vertex(3);
-//		c.setText("c");
-//		Vertex d = new Vertex(4);
-//		d.setText("d");
-//		Vertex e = new Vertex(5);
-//		e.setText("e");
-//		Vertex f = new Vertex(6);
-//		f.setText("f");
-//
-//		a.addOutGoingEdge(new Edge(d));
-//		// b.addOutGoingEdge(new Edge(f));
-//		c.addOutGoingEdge(new Edge(d));
-//		c.addOutGoingEdge(new Edge(b));
-//		e.addOutGoingEdge(new Edge(f));
-//
-//		graph.addVertex(a);
-//		graph.addVertex(b);
-//		graph.addVertex(c);
-//		graph.addVertex(d);
-//		graph.addVertex(e);
-//		graph.addVertex(f);
-//		//
-//		TopSort ex = new TopSort(graph);
-//		ex.topologicalSort();
-//
-//		System.out.println("-------------------------------");
-//
-//		LinkedList<Vertex> l = new LinkedList<Vertex>();
-//		l.add(e);
-//		l.add(c);
-//		l.add(b);
-//		l.add(f);
-//		l.add(a);
-//		l.add(d);
-//
-//		Map<Vertex, Integer> map = new HashMap<Vertex, Integer>();
-//		map.put(e, 0);
-//		map.put(c, 1);
-//		map.put(b, 2);
-//		map.put(f, 3);
-//		map.put(a, 4);
-//		map.put(d, 5);
-//
-//		ex.setTopOrder(l, map);
-//		ex.print();
-//		ex.printStackMap();
-//		//
-//		ex.addBackwardEdge(f, c);
-//		ex.print();
-//		ex.printStackMap();
+		DirectedGraph<Vertex, Edge> graph = new DirectedSparseGraph<Vertex, Edge>();
+		Vertex a = new Vertex(1);
+		a.setText("a");
+		Vertex b = new Vertex(2);
+		b.setText("b");
+		Vertex c = new Vertex(3);
+		c.setText("c");
+		Vertex d = new Vertex(4);
+		d.setText("d");
+		Vertex e = new Vertex(5);
+		e.setText("e");
+		Vertex f = new Vertex(6);
+		f.setText("f");
+
+		a.addOutGoingEdge(new Edge(d));
+		// b.addOutGoingEdge(new Edge(f));
+		c.addOutGoingEdge(new Edge(d));
+		c.addOutGoingEdge(new Edge(b));
+		e.addOutGoingEdge(new Edge(f));
+		// f.addOutGoingEdge(new Edge(c));
+		// a.addOutGoingEdge(new Edge(f));
+
+		graph.addVertex(a);
+		graph.addVertex(b);
+		graph.addVertex(c);
+		graph.addVertex(d);
+		graph.addVertex(e);
+		graph.addVertex(f);
+		//
+		TopSort ex = new TopSort(graph);
+		ex.topologicalSort();
+
+		System.out.println("-------------------------------");
+
+		// LinkedList<Vertex> l = new LinkedList<Vertex>();
+		// l.add(e);
+		// l.add(c);
+		// l.add(b);
+		// l.add(a);
+		// l.add(f);
+		// l.add(d);
+		//
+		// Map<Vertex, Integer> map = new HashMap<Vertex, Integer>();
+		// map.put(e, 0);
+		// map.put(c, 1);
+		// map.put(b, 2);
+		// map.put(a, 3);
+		// map.put(f, 4);
+		// map.put(d, 5);
+
+		// ex.setTopOrder(l, map);
+		// ex.print();
+		// ex.printStackMap();
+		System.out.println("-------------------------------");
+		ex.insertEdge(f, c);
+		System.out.println("-------------------------------");
+		// ex.print();
+		// ex.printStackMap();
+
+		ex.insertEdge(a, f);
+		System.out.println("-------------------------------");
+
+		ex.print();
+
+		// ex.addBackwardEdge(d, e);
+
+		ex.insertEdge(f, b);
+		System.out.println("-------------------------------");
+		ex.print();
+		// ex.print();
+		// ex.printStackMap();
 	}
 
 }

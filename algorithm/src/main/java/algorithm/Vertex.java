@@ -16,7 +16,6 @@ class Vertex implements Comparable<Vertex> {
 	private double occurrences;
 
 	private Set<Edge> outgoingEdges;
-
 	private double sumOutGoing;
 
 	private int nr;
@@ -36,7 +35,7 @@ class Vertex implements Comparable<Vertex> {
 	void addOutGoingEdge(Edge e) {
 		outgoingEdges.add(e);
 	}
-
+	
 	void removeAllOutgoingEdges() {
 		this.outgoingEdges.clear();
 	}
@@ -56,7 +55,7 @@ class Vertex implements Comparable<Vertex> {
 	Set<Edge> getOutgoingEdges() {
 		return this.outgoingEdges;
 	}
-
+	
 	List<String> getUris() {
 		return uris;
 	}
